@@ -1,23 +1,19 @@
 package com.arthurfmg.todolist.ui
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.room.Room
 import com.arthurfmg.todolist.databinding.ActivityAddTaskBinding
 import com.arthurfmg.todolist.datasource.TaskDao
-import com.arthurfmg.todolist.datasource.TaskDataSource
 import com.arthurfmg.todolist.datasource.TaskDatabase
 import com.arthurfmg.todolist.extensions.format
 import com.arthurfmg.todolist.extensions.text
 import com.arthurfmg.todolist.model.Task
-import com.google.android.material.datepicker.CalendarConstraints
-import com.google.android.material.datepicker.DateValidatorPointForward
-import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.datepicker.*
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import java.util.*
+
 
 class AddTaskActivity : AppCompatActivity() {
 
@@ -48,19 +44,27 @@ class AddTaskActivity : AppCompatActivity() {
     private fun insertListeners(database: TaskDao) {
 
         binding.tilDate.editText?.setOnClickListener {
-            val datePicker = MaterialDatePicker.Builder.datePicker().build()
+            val datePicker = MaterialDatePicker.Builder.datePicker()
 
-            datePicker.addOnPositiveButtonClickListener {
+            val constraintBuilder = CalendarConstraints.Builder()
+            val dateValidator = DateValidatorPointForward.now()
+            constraintBuilder.setValidator(dateValidator)
+
+            datePicker.setCalendarConstraints(constraintBuilder.build())
+            val picker = datePicker.build()
+
+            picker.addOnPositiveButtonClickListener {
                 val timeZone = TimeZone.getDefault()
                 val offset = timeZone.getOffset(Date().time) * -1
                 binding.tilDate.text = Date(it + offset).format()
             }
 
-            datePicker.show(supportFragmentManager, "DATE_PICKER_TAG")
+            picker.show(supportFragmentManager, "DATE_PICKER_TAG")
         }
 
         binding.tilHour.editText?.setOnClickListener {
             val timePicker = MaterialTimePicker.Builder().setTimeFormat(TimeFormat.CLOCK_24H).build()
+
             timePicker.addOnPositiveButtonClickListener {
                 val minute = if(timePicker.minute in 0..9) "0${timePicker.minute}" else timePicker.minute
 

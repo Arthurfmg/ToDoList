@@ -48,19 +48,21 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/til_description"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_marginTop="8dp"
         android:hint="@string/descricao"
-        app:layout_constraintTop_toBottomOf="@id/til_title"
+        app:layout_constraintEnd_toEndOf="@id/guide_end"
         app:layout_constraintStart_toStartOf="@id/guide_start"
-        app:layout_constraintEnd_toEndOf="@id/guide_end">
+        app:layout_constraintTop_toBottomOf="@id/til_title">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textMultiLine"/>
+            android:gravity="top"
+            android:inputType="textCapSentences|textMultiLine"
+            android:lines="4"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
